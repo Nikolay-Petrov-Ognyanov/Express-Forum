@@ -5,7 +5,7 @@ const { parseError } = require("../util/parser")
 
 userController.post("/register",
     body("email").isEmail().withMessage("Invalid email"),
-    body("password").isLength({ min: 5 }).withMessage("Password must be at least 5 characters long."),
+    body("password").isLength({ min: 5 }).withMessage("Password must be at least 5 characters long"),
     async (req, res) => {
         try {
             const { errors } = validationResult(req)
@@ -30,12 +30,12 @@ userController.post("/login", async (req, res) => {
 
         res.json(token)
     } catch (error) {
-        res.status(401).json({ message })
+        res.status(401).json({ message: error.message })
     }
 })
 
-userController.get("/logout", async (req, res) => {
-    const token = req.token
+userController.post("/logout", async (req, res) => {
+    const token = req.body.accessToken
 
     await logout(token)
 
