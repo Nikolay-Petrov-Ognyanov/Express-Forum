@@ -1,9 +1,17 @@
+const postService = require("../services/postService")
+
 const postController = require("express").Router()
 
-postController.get("/", (req, res) => {
-    console.log(req.user)
+postController.get("/", async (req, res) => {
+    const posts = await postService.getAllPosts()
 
-    res.json([])
+    res.json(posts)
+})
+
+postController.post("/", async (req, res) => {
+    console.log(req.body.title, req.body.content)
+
+    await postService.createPost(req.body.title, req.body.content)
 })
 
 module.exports = postController

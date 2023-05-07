@@ -6,14 +6,14 @@ const secret = "jwtsecret"
 
 const tokenBlacklist = new Set()
 
-async function register(email, password) {
-    const existing = await User.findOne({ email }).collation({ locale: "en", strength: 2 })
+async function register(username, password) {
+    const existing = await User.findOne({ username }).collation({ locale: "en", strength: 2 })
 
     if (existing) {
-        throw new Error("Email is taken")
+        throw new Error("Username is taken")
     } else {
         const user = await User.create({
-            email,
+            username,
             hashedPassword: await bcrypt.hash(password, 10)
         })
 
@@ -21,17 +21,17 @@ async function register(email, password) {
     }
 }
 
-async function login(email, password) {
-    const user = await User.findOne({ email }).collation({ locale: "en", strength: 2 })
+async function login(username, password) {
+    const user = await User.findOne({ username }).collation({ locale: "en", strength: 2 })
 
     if (!user) {
-        throw new Error("Incorrect email or password")
+        throw new Error("Incorrect username or password")
     }
 
     const match = await bcrypt.compare(password, user.hashedPassword)
 
     if (!match) {
-        throw new Error("Incorrect email or password")
+        throw new Error("Incorrect username or password")
     }
 
     return createToken(user)
@@ -44,12 +44,12 @@ async function logout(token) {
 function createToken(user) {
     const payload = {
         _id: user._id,
-        email: user.email
+        username: user.username
     }
 
     return {
         _id: user._id,
-        email: user.email,
+        username: user.username,
         accessToken: JWT.sign(payload, secret)
     }
 }

@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator")
 const { parseError } = require("../util/parser")
 
 userController.post("/register",
-    body("email").isEmail().withMessage("Invalid email"),
+    body("username").isLength({ min: 2 }).withMessage("Username must be at least 2 characters long"),
     body("password").isLength({ min: 5 }).withMessage("Password must be at least 5 characters long"),
     async (req, res) => {
         try {
@@ -14,7 +14,7 @@ userController.post("/register",
                 throw errors
             }
 
-            const token = await register(req.body.email, req.body.password)
+            const token = await register(req.body.username, req.body.password)
 
             res.json(token)
         } catch (error) {
@@ -26,7 +26,7 @@ userController.post("/register",
 
 userController.post("/login", async (req, res) => {
     try {
-        const token = await login(req.body.email, req.body.password)
+        const token = await login(req.body.username, req.body.password)
 
         res.json(token)
     } catch (error) {
