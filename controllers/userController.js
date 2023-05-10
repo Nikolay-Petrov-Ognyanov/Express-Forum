@@ -15,7 +15,7 @@ userController.post("/register",
             }
 
             const token = await register(req.body.username, req.body.password)
-
+            
             res.json(token)
         } catch (error) {
             const message = parseError(error)

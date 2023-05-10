@@ -6,12 +6,12 @@ const postSchema = new Schema({
     comments: { type: Array, default: [] }
 })
 
-// postSchema.index({ title: 1 }, {
-//     collation: {
-//         locale: "en",
-//         strength: 2
-//     }
-// })
+postSchema.index({ title: 1 }, {
+    collation: {
+        locale: "en",
+        strength: 2
+    }
+})
 
 const Post = model("Post", postSchema)
 
