@@ -16,7 +16,9 @@ postController.get("/", async (req, res) => {
 
 postController.post("/", async (req, res) => {
     try {
-        await postService.createPost(req.body.title, req.body.content)
+        const post = await postService.createPost(req.body.title, req.body.content)
+        
+        res.status(200).json(post)
     } catch (error) {
         console.error(error)
 
