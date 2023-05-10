@@ -4,11 +4,16 @@ function createPost(title, content) {
     return Post.create({ title, content })
 }
 
-function getAllPosts() {
+function getPosts() {
     return Post.find({})
+}
+
+function getPost(id) {
+    return Post.findOne({_id: id})
 }
 
 module.exports = {
     createPost,
-    getAllPosts
+    getPosts,
+    getPost
 }
