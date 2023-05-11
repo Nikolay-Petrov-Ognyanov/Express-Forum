@@ -4,7 +4,7 @@ const postController = require("express").Router()
 
 postController.get("/", async (req, res) => {
     try {
-        const posts = await postService.getPosts()
+        const posts = await postService.readPosts()
 
         res.status(200).json(posts)
     } catch (error) {
@@ -16,7 +16,11 @@ postController.get("/", async (req, res) => {
 
 postController.post("/", async (req, res) => {
     try {
-        const post = await postService.createPost(req.body.title, req.body.content)
+        const post = await postService.createPost(
+            req.body.authorId,
+            req.body.title,
+            req.body.content,
+        )
 
         res.status(200).json(post)
     } catch (error) {
@@ -28,7 +32,7 @@ postController.post("/", async (req, res) => {
 
 postController.get("/:id", async (req, res) => {
     try {
-        const post = await postService.getPost(req.params.id)
+        const post = await postService.readPost(req.params.id)
 
         res.status(200).json(post)
     } catch (error) {

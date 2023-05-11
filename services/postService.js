@@ -1,19 +1,19 @@
 const Post = require("../models/Post")
 
-function createPost(title, content) {
-    return Post.create({ title, content })
+function createPost(authorId, title, content) {
+    return Post.create({ authorId, title, content })
 }
 
-function getPosts() {
+function readPosts() {
     return Post.find({})
 }
 
-function getPost(id) {
-    return Post.findOne({_id: id})
+function readPost(id) {
+    return Post.findOne({ _id: id })
 }
 
 module.exports = {
     createPost,
-    getPosts,
-    getPost
+    readPosts,
+    readPost
 }
