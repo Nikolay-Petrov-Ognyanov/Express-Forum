@@ -1,5 +1,4 @@
 const postService = require("../services/postService")
-
 const postController = require("express").Router()
 
 postController.get("/", async (req, res) => {
@@ -30,15 +29,27 @@ postController.post("/", async (req, res) => {
     }
 })
 
-postController.get("/:id", async (req, res) => {
+postController.get("/:postId", async (req, res) => {
     try {
-        const post = await postService.readPost(req.params.id)
+        const post = await postService.readPost(req.params.postId)
 
         res.status(200).json(post)
     } catch (error) {
         console.error(error)
 
         res.status(400).json({ message: error.message })
+    }
+})
+
+postController.put("/:postId", async (req, res) => {
+    try {
+        const post = await postService.updatePost(req.params.postId, req.body)
+
+        res.status(200).json(post)
+    } catch (error) {
+        console.error(error)
+
+        // res.status(400).json({ message: error.message })
     }
 })
 

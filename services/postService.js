@@ -12,8 +12,13 @@ function readPost(id) {
     return Post.findOne({ _id: id })
 }
 
+function updatePost(postId, post) {
+    return Post.updateOne({ _id: postId }, post)
+}
+
 module.exports = {
     createPost,
     readPosts,
-    readPost
+    readPost,
+    updatePost
 }
