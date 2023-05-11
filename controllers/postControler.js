@@ -49,7 +49,19 @@ postController.put("/:postId", async (req, res) => {
     } catch (error) {
         console.error(error)
 
-        // res.status(400).json({ message: error.message })
+        res.status(400).json({ message: error.message })
+    }
+})
+
+postController.delete("/:postId", async (req, res) => {
+    try {
+        const post = await postService.deletePost(req.params.postId)
+
+        res.status(200).json(post)
+    } catch (error) {
+        console.error(error)
+
+        res.status(400).json({ message: error.message })
     }
 })
 

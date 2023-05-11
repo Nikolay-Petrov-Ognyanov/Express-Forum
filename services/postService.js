@@ -16,9 +16,14 @@ function updatePost(postId, post) {
     return Post.updateOne({ _id: postId }, post)
 }
 
+function deletePost(postId) {
+    return Post.deleteOne({_id: postId})
+}
+
 module.exports = {
     createPost,
     readPosts,
     readPost,
-    updatePost
+    updatePost,
+    deletePost
 }
