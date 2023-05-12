@@ -1,7 +1,19 @@
-const { register, login, logout } = require("../services/userService")
+const userService = require("../services/userService")
 const userController = require("express").Router()
 const { body, validationResult } = require("express-validator")
 const { parseError } = require("../util/parser")
+
+userController.get("/", async (req, res) => {
+    try {
+        const users = await userService.readUsers()
+
+        res.status(200).json({ users })
+    } catch (error) {
+        const message = parseError(error)
+
+        res.status(400).json({ message })
+    }
+})
 
 userController.post("/register",
     body("username").isLength({ min: 2 }).withMessage("Username must be at least 2 characters long"),
@@ -14,8 +26,8 @@ userController.post("/register",
                 throw errors
             }
 
-            const token = await register(req.body.username, req.body.password)
-            
+            const token = await userService.register(req.body.username, req.body.password)
+
             res.json(token)
         } catch (error) {
             const message = parseError(error)
@@ -26,7 +38,7 @@ userController.post("/register",
 
 userController.post("/login", async (req, res) => {
     try {
-        const token = await login(req.body.username, req.body.password)
+        const token = await userService.login(req.body.username, req.body.password)
 
         res.json(token)
     } catch (error) {
@@ -35,11 +47,17 @@ userController.post("/login", async (req, res) => {
 })
 
 userController.post("/logout", async (req, res) => {
-    const token = req.body.accessToken
+    try {
+        console.log(req.body)
 
-    await logout(token)
+        const token = req.body.accessToken
 
-    res.status(204).end()
+        await userService.logout(token)
+
+        res.status(204).end()
+    } catch (error) {
+        res.status(401).json({ message: error.message })
+    }
 })
 
 module.exports = userController

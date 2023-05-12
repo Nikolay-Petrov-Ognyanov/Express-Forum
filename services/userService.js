@@ -6,11 +6,15 @@ const secret = "jwtsecret"
 
 const tokenBlacklist = new Set()
 
+async function readUsers() {
+    return await User.find()
+}
+
 async function register(username, password) {
     const existing = await User.findOne({ username }).collation({ locale: "en", strength: 2 })
 
     if (existing) {
-        throw new Error("Username is taken")
+        return "Username is taken"
     } else {
         const user = await User.create({
             username,
@@ -25,7 +29,7 @@ async function login(username, password) {
     const user = await User.findOne({ username }).collation({ locale: "en", strength: 2 })
 
     if (!user) {
-        throw new Error("Incorrect username or password")
+        return "Incorrect username or password"
     }
 
     const match = await bcrypt.compare(password, user.hashedPassword)
@@ -38,6 +42,7 @@ async function login(username, password) {
 }
 
 async function logout(token) {
+    console.log(token)
     tokenBlacklist.add(token)
 }
 
@@ -66,5 +71,6 @@ module.exports = {
     register,
     login,
     logout,
-    parseToken
+    parseToken,
+    readUsers
 }
