@@ -42,7 +42,6 @@ async function login(username, password) {
 }
 
 async function logout(token) {
-    console.log(token)
     tokenBlacklist.add(token)
 }
 
