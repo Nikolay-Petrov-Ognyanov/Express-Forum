@@ -14,7 +14,7 @@ async function register(username, password) {
     const existing = await User.findOne({ username }).collation({ locale: "en", strength: 2 })
 
     if (existing) {
-        return "Username is taken"
+        throw new Error("Username is taken")
     } else {
         const user = await User.create({
             username,
@@ -29,7 +29,7 @@ async function login(username, password) {
     const user = await User.findOne({ username }).collation({ locale: "en", strength: 2 })
 
     if (!user) {
-        return "Incorrect username or password"
+        throw new Error("Incorrect username or password")
     }
 
     const match = await bcrypt.compare(password, user.hashedPassword)
