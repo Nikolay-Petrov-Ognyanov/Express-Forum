@@ -16,8 +16,8 @@ userController.get("/", async (req, res) => {
 })
 
 userController.post("/register",
-    body("username").isLength({ min: 2 }).withMessage("Username must be at least 2 characters long"),
-    body("password").isLength({ min: 5 }).withMessage("Password must be at least 5 characters long"),
+    body("username").isLength({ min: 2 }).withMessage("Username must be at least 2 characters long."),
+    body("password").isLength({ min: 5 }).withMessage("Password must be at least 5 characters long."),
     async (req, res) => {
         try {
             const { errors } = validationResult(req)
