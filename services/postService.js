@@ -8,8 +8,8 @@ function readPosts() {
     return Post.find({})
 }
 
-function readPost(id) {
-    return Post.findOne({ _id: id })
+function readPost(postId) {
+    return Post.findOne({ _id: postId })
 }
 
 function updatePost(postId, post) {
@@ -17,7 +17,17 @@ function updatePost(postId, post) {
 }
 
 function deletePost(postId) {
-    return Post.deleteOne({_id: postId})
+    return Post.deleteOne({ _id: postId })
+}
+
+async function createComment(postId, comment) {
+    const post = await readPost(postId)
+
+    post.comments.push(comment)
+
+    await updatePost(postId, post)
+
+    return post
 }
 
 module.exports = {
@@ -25,5 +35,6 @@ module.exports = {
     readPosts,
     readPost,
     updatePost,
-    deletePost
+    deletePost,
+    createComment
 }
