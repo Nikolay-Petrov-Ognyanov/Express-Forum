@@ -21,7 +21,7 @@ postController.post("/", async (req, res) => {
             req.body.content,
         )
 
-        res.status(200)
+        res.status(200).json(post)
     } catch (error) {
         console.error(error)
 
